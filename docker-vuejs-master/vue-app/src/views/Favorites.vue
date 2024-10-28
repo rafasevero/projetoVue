@@ -6,7 +6,7 @@
 <script >
 import Favorite from '@/components/Favorite.vue';
     export default{
-        name: "Characters",
+        name: "Favorites",
         components:{
           Favorite,
         }

@@ -21,7 +21,8 @@ export default {
   data() {
     return {
       charactersData: [],
-      favorites: [] // Estado para armazenar favoritos
+      favorites: JSON.parse(localStorage.getItem("favorites")) || [] // Carrega os favoritos do localStorage
+
     };
   },
   async created() {
@@ -32,16 +33,17 @@ export default {
     toggleFavorite(character) {
       const index = this.favorites.findIndex(fav => fav._id === character._id);
       if (index === -1) {
-        this.favorites.push(character); // Adiciona aos favoritos
+        this.favorites.push(character);
       } else {
-        this.favorites.splice(index, 1); // Remove dos favoritos
+        this.favorites.splice(index, 1);
       }
+      localStorage.setItem("favorites", JSON.stringify(this.favorites)); // Salva no localStorage
     },
     isFavorite(character) {
       return this.favorites.some(fav => fav._id === character._id);
     }
   }
-};
+}
 </script>
 
 

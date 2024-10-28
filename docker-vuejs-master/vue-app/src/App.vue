@@ -4,6 +4,7 @@
     <Banner v-if="$route.path === '/'"/>
     <RouterView />
     <Footer />
+    
   </div>
 </template>
 
