@@ -17,6 +17,8 @@
         object-fit: cover;
         background-image: url('../../public/img/banner.jpg');
         background-position: 0 -10px;
+        backdrop-filter: blur(2px);
+
         background-size:cover;
         background-repeat:no-repeat;
         height: 800px;

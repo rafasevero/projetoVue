@@ -1,66 +1,78 @@
 <template>
-    <div class="favorites-container">
-      <h2>Favoritos</h2>
-      <div v-if="favorites.length === 0">Nenhum favorito adicionado.</div>
-      <div v-else class="characters-container">
-        <div class="card-characters" v-for="character in favorites" :key="character._id">
-          <img :src="character.photo" :alt="character.name">
-          <h3>{{ character.name }}</h3>
-          <div class="color">{{ character.status }}</div>
-        </div>
+  <div class="favorites-container">
+    <h2>Favoritos</h2>
+    
+    <div class="characters-container">
+      <div class="card-characters" v-for="character in favorites" :key="character._id">
+        <img :src="character.photo" :alt="character.name">
+        <h3>{{ character.name }}</h3>
+        <div class="color">{{ character.status }}</div>
+        <button class="favorite-button" @click="removeFavorite(character._id)">
+          <span class="heart-filled">❤️</span>
+        </button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "Favorites",
-    computed: {
-      favorites() {
-        return this.$root.$data.favorites; // Pega os favoritos do estado root
+    
+    <div v-if="favorites.length === 0">Nenhum favorito adicionado.</div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "FavoriteCharacters",
+  data() {
+    return {
+      favorites: JSON.parse(localStorage.getItem("favorites")) || [],
+    };
+  },
+  methods: {
+    removeFavorite(characterId) {
+      const index = this.favorites.findIndex(fav => fav._id === characterId);
+      if (index !== -1) {
+        this.favorites.splice(index, 1);
+        localStorage.setItem("favorites", JSON.stringify(this.favorites)); 
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-    favorites-container {
-  padding: 20px;
+    },
+  },
+};
+</script>
+
+<style scoped>
+.favorites-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #1c1c1e;
   min-height: 100vh;
+  padding: 20px;
   color: #ffffff;
 }
 
-.favorites-container h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #ff6961;
-  text-align: center;
-}
-
-/* Estilo da mensagem de "nenhum favorito" */
-.favorites-container div {
-  font-size: 1.2rem;
-  color: #cccccc;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Container dos cards */
 .characters-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  max-width: 100%;
 }
 
-/* Card do personagem */
+.favorites-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #d1140a;
+  text-align: center;
+}
+
+.favorites-container > div[v-if="favorites.length === 0"] {
+  font-size: 1.2rem;
+  color: #b00e0e;
+  text-align: center;
+  margin-top: 20px;
+}
+
 .card-characters {
   position: relative;
-  background-color: #2e2e2f;
+  background: url(../../public/img/background.jpg);
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   padding: 16px;
@@ -75,7 +87,6 @@
   box-shadow: 0 6px 12px rgba(255, 105, 97, 0.3);
 }
 
-/* Estilo da imagem */
 .card-characters img {
   width: 100%;
   height: 280px;
@@ -84,10 +95,9 @@
   margin-bottom: 10px;
 }
 
-/* Nome e status */
 .card-characters h3 {
   font-size: 1.5rem;
-  color: #ff6961;
+  color: #ff0d00;
   font-family: 'Georgia', serif;
 }
 
@@ -96,7 +106,6 @@
   color: #cccccc;
 }
 
-/* Alinha o coração de favorito */
 .favorite-button {
   background: transparent;
   border: none;
@@ -111,9 +120,4 @@
 .heart-filled {
   color: #ff6961;
 }
-
-.heart-empty {
-  color: #ccc;
-}
 </style>
-  

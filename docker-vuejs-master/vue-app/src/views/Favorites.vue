@@ -1,6 +1,5 @@
 <template>
-  <Favorite />
-
+  <Favorite/>
 </template>
 
 <script >

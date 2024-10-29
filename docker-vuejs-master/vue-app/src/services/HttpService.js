@@ -8,7 +8,7 @@ const HttpService = axios.create({
 });
 
 export const ShowCharacters = async () => {
-   return await HttpService.get('characters/random?count=24');
+   return await HttpService.get('characters/random?count=60');
  
 };
 

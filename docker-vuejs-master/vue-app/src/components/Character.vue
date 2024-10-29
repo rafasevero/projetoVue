@@ -1,49 +1,64 @@
 <template>
+  <!-- Container principal para os personagens -->
   <div class="characters-container">
+    <!-- Para cada personagem na lista de personagens, renderiza um cartão -->
     <div class="card-characters" v-for="character in charactersData" :key="character._id">
+      <!-- Exibe a foto do personagem -->
       <img :src="character.photo" :alt="character.name">
+      <!-- Exibe o nome do personagem -->
       <h3>{{ character.name }}</h3>
+      <!-- Exibe o status do personagem -->
       <div class="color">{{ character.status }}</div>
+      <!-- Botão para favoritar/desfavoritar o personagem -->
       <button class="favorite-button" @click="toggleFavorite(character)">
+        <!-- Exibe um coração preenchido se o personagem for favorito, caso contrário exibe um coração vazio -->
         <span :class="isFavorite(character) ? 'heart-filled' : 'heart-empty'">❤️</span>
       </button>
     </div>
   </div>
 </template>
 
-
 <script>
+// Importa o serviço que busca os personagens
 import { ShowCharacters } from '@/services/HttpService';
-import { useRouter } from 'vue-router';
 
 export default {
   name: "Characters",
   data() {
     return {
+      // Armazena os dados dos personagens
       charactersData: [],
-      favorites: JSON.parse(localStorage.getItem("favorites")) || [] // Carrega os favoritos do localStorage
-
+      // Carrega os favoritos do localStorage ou inicializa como um array vazio
+      favorites: JSON.parse(localStorage.getItem("favorites")) || []
     };
   },
   async created() {
-    const response = await ShowCharacters();
-    this.charactersData = response.data;
+    // Método chamado quando o componente é criado
+    const response = await ShowCharacters(); // Chama o serviço para obter os personagens
+    this.charactersData = response.data; // Armazena os dados obtidos na variável charactersData
   },
   methods: {
+    // Método para alternar o estado de favorito de um personagem
     toggleFavorite(character) {
+      // Procura se o personagem já está na lista de favoritos
       const index = this.favorites.findIndex(fav => fav._id === character._id);
       if (index === -1) {
+        // Se não estiver, adiciona aos favoritos
         this.favorites.push(character);
       } else {
+        // Se já estiver, remove dos favoritos
         this.favorites.splice(index, 1);
       }
-      localStorage.setItem("favorites", JSON.stringify(this.favorites)); // Salva no localStorage
+      // Salva a lista atualizada de favoritos no localStorage
+      localStorage.setItem("favorites", JSON.stringify(this.favorites));
     },
+    // Método para verificar se um personagem é favorito
     isFavorite(character) {
+      // Retorna verdadeiro se o personagem estiver na lista de favoritos
       return this.favorites.some(fav => fav._id === character._id);
     }
   }
-}
+};
 </script>
 
 
@@ -55,14 +70,15 @@ export default {
   gap: 20px;
   justify-content: center;
   padding: 20px;
-  background-image: url(../../public/img/background.jpg);
+  background-image: url(../../public/img/banner.jpg);
   background-size:contain;
   background-position:top;
 }
 
 .card-characters {
   position: relative;
-  background-color:rgb(0, 0, 0);
+  background: url(../../public/img/background.jpg);
+  margin:15px;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(2, 5, 168, 0.912);
   padding: 16px;
@@ -100,7 +116,7 @@ export default {
   margin: 8px auto 0;
 }
 
-favorite-button {
+.favorite-button {
   background: transparent;
   border: none;
   font-size: 1.5rem;
@@ -116,5 +132,4 @@ favorite-button {
 .heart-empty {
   color: #ccc;
 }
-
 </style>
