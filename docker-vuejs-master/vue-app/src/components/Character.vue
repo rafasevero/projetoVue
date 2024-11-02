@@ -70,7 +70,7 @@ export default {
   gap: 20px;
   justify-content: center;
   padding: 20px;
-  background-image: url(../../public/img/banner.jpg);
+  background-color: #222;
   background-size:contain;
   background-position:top;
 }
