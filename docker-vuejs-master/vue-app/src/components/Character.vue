@@ -1,17 +1,11 @@
 <template>
-  <!-- Container principal para os personagens -->
   <div class="characters-container">
-    <!-- Para cada personagem na lista de personagens, renderiza um cartão -->
     <div class="card-characters" v-for="character in charactersData" :key="character._id">
-      <!-- Exibe a foto do personagem -->
+    
       <img :src="character.photo" :alt="character.name">
-      <!-- Exibe o nome do personagem -->
       <h3>{{ character.name }}</h3>
-      <!-- Exibe o status do personagem -->
       <div class="color">{{ character.status }}</div>
-      <!-- Botão para favoritar/desfavoritar o personagem -->
       <button class="favorite-button" @click="toggleFavorite(character)">
-        <!-- Exibe um coração preenchido se o personagem for favorito, caso contrário exibe um coração vazio -->
         <span :class="isFavorite(character) ? 'heart-filled' : 'heart-empty'">❤️</span>
       </button>
     </div>
@@ -19,42 +13,31 @@
 </template>
 
 <script>
-// Importa o serviço que busca os personagens
 import { ShowCharacters } from '@/services/HttpService';
 
 export default {
   name: "Characters",
   data() {
     return {
-      // Armazena os dados dos personagens
       charactersData: [],
-      // Carrega os favoritos do localStorage ou inicializa como um array vazio
       favorites: JSON.parse(localStorage.getItem("favorites")) || []
     };
   },
   async created() {
-    // Método chamado quando o componente é criado
-    const response = await ShowCharacters(); // Chama o serviço para obter os personagens
-    this.charactersData = response.data; // Armazena os dados obtidos na variável charactersData
+    const response = await ShowCharacters(); 
+    this.charactersData = response.data; 
   },
   methods: {
-    // Método para alternar o estado de favorito de um personagem
     toggleFavorite(character) {
-      // Procura se o personagem já está na lista de favoritos
       const index = this.favorites.findIndex(fav => fav._id === character._id);
       if (index === -1) {
-        // Se não estiver, adiciona aos favoritos
         this.favorites.push(character);
       } else {
-        // Se já estiver, remove dos favoritos
         this.favorites.splice(index, 1);
       }
-      // Salva a lista atualizada de favoritos no localStorage
       localStorage.setItem("favorites", JSON.stringify(this.favorites));
     },
-    // Método para verificar se um personagem é favorito
     isFavorite(character) {
-      // Retorna verdadeiro se o personagem estiver na lista de favoritos
       return this.favorites.some(fav => fav._id === character._id);
     }
   }
@@ -121,7 +104,7 @@ export default {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #ff6961; /* Cor do coração */
+  color: #ff6961; 
   margin-top: 10px;
 }
 
